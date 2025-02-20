@@ -14,11 +14,13 @@ class Program {
     public static void Hi(string name, string violence) {
         Console.WriteLine($"HEY {name}!!!!! *{violence}* GET OUT OF BED!!!!!!!!!!");
 
-        int adding = 0;
-        int[] marks = {55, 65, 76, 77, 56};
+        int[] marks = {55, 65, 76, 77, 3};
+        int adding = marks[0];
 
         foreach (int mark in marks) {
-            adding += mark; // Add the value of each mark to 'adding'
+            if (mark < adding) {
+            adding = mark;
+            }
         }
         Console.WriteLine(adding); // Print the cumulative total
     }
