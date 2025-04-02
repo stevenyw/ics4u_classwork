@@ -7,7 +7,7 @@ class Person {
         this.Name = name;
     }
 
-    public void Introduce() {
+    public virtual void Introduce() { // Virtual allows it to be overriden
         Console.WriteLine($"Hello, my name is {this.Name}.");
     }
 }
@@ -18,10 +18,15 @@ class Student : Person { // Student inherits from Person
     {
         this.StudentID = studentID;
     }
+    
+    public override void Introduce() {
+        Console.WriteLine($"Hello, my name is {this.Name}, and I'm a student.");
+
+    }
 }
 
 class Building {
-    public Person[] Occupants;
+    public Person[] Occupants; // Creates an array called Occupants that holds Person objects
 
     public Building(int maxOccupancy) {
         this.Occupants = new Person[maxOccupancy];
@@ -42,8 +47,18 @@ class Program {
         school.Occupants[0].Introduce();
         
         Student sally = new Student("Sally", 1234);
-        sally.Introduce();
+        sally.Introduce(); // Called the introduce method in the student class.
+        
+        // 1. Add sally to the building
+        // 2. Then, get her to introduce herself by going through the building object "school"
+        // 3. What happens if you write sally = null; ?
+        // It gets rid of the pointer to the Student object, but we created another pointer by making location 1 point to Sally. If we get rid of Sally, school.Occupants[1] still points to Sally
+        
+        school.Occupants[1] = sally;
+        
+        school.Occupants[1].Introduce(); // Introduced the thing from the person class, not the student class. To fix this...
         
         
+
+        }
     }
-}
