@@ -28,7 +28,7 @@ class Container {
     }
     
 class SealableContainer : Container {
-    private bool _isSealed = true;
+    protected bool _isSealed = true; // Private to the client code, but not to its children (child classes)
         
     public SealableContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
         }
@@ -46,7 +46,7 @@ class SealableContainer : Container {
         base.Fill(amount);
             }
         
-    public void Open() {
+    public void Open() { // W
         if (_isSealed == false) {
             throw new ArgumentException("It's already open");
         }
@@ -101,6 +101,9 @@ class LockedContainer : SealableContainer {
     }
     
     public void Lock() {
+        if (_isSealed == false) {
+            throw new ArgumentException("t");
+        }
         _isLocked = true;
     }
     
@@ -114,7 +117,7 @@ class Program {
     {
         LockedContainer bucket = new LockedContainer("Michelin", "Black", 5);
         bucket.Fill(500);
-        bucket.Consume(600);
+        bucket.Consume(300);
     }
 }
 }
