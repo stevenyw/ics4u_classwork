@@ -13,14 +13,14 @@ class Container {
         this._volume = 0;
     }
     
-    public void Consume(int amount) {
+    public virtual void Consume(int amount) {
         if (this._volume <= 0) {
             throw new ArgumentException("Container is empty");
         }
         this._volume -= amount;
     }
     
-    public void Fill(int amount) {
+    public virtual void Fill(int amount) {
         if (this._volume >= this._maxVolume) {
             throw new ArgumentException("Container is full");
         }
@@ -33,29 +33,35 @@ class SealableContainer : Container {
     public SealableContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
         }
         
-    public void Consume(int amount) {
+    public override void Consume(int amount) {
         if (this._volume <= 0) {
             throw new ArgumentException("Container is empty");
             }
-        this._volume -= amount;
+        base.Consume(amount);
         }
         
     public void Fill(int amount) {
         if (this._volume >= this._maxVolume) {
             throw new ArgumentException("Container is full"); }
-        this._volume += amount;
+        base.Fill(amount);
             }
         
     public void Open() {
-        this._isSealed = false;
+        if (_isSealed == false) {
+            throw new ArgumentException("It's already open");
+        }
+        _isSealed = false;
     }
     
     public void Closed() {
-        this._isSealed = true;
+        if (_isSealed == true) {
+            throw new ArgumentException("It's already closed");
+        }
+        _isSealed = true;
     }
 }
 
-class LockedContainer : Container {
+class LockedContainer : SealableContainer {
     private bool _isLocked = false;
     
     public LockedContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
@@ -65,29 +71,33 @@ class LockedContainer : Container {
     public void Consume(int amount) {
         if (this._volume <= 0) {
             throw new ArgumentException("Container is empty");
+            
         }
-        this._volume -= amount;
+        if (amount > this._volume) {
+            throw new ArgumentException("You can't drink more than the remaining volume");
+            }
+        if (_isLocked == true) {
+            throw new ArgumentException("You can't consume from a locked container");
+        }
+        base.Consume(amount);
     }
         
     public void Fill(int amount) {
         if (this._volume >= this._maxVolume) {
             throw new ArgumentException("Container is full");
         }
-        this._volume += amount;
+        if (_isLocked == true) {
+            throw new ArgumentException("You can't fill a locked container");
+        }
+        base.Fill(amount);
     }
     
     public void Open() {
-        if (this._isLocked == false) {
-            throw new ArgumentException("Container is locked and cannot be opened");
-        }
-       this._isLocked = false;
+       base.Open();
     }
     
     public void Closed() {
-        if (this._isLocked == true) {
-            throw new ArgumentException("Container is locked and cannot be closed");
-        }
-    this._isLocked = true;
+        base.Closed();
     }
     
     public void Lock() {
@@ -102,7 +112,9 @@ class LockedContainer : Container {
 class Program {
     public static void Main(string[] args)
     {
-        Console.WriteLine ("Try programiz.pro");
+        LockedContainer bucket = new LockedContainer("Michelin", "Black", 5);
+        bucket.Fill(500);
+        bucket.Consume(600);
     }
 }
 }
