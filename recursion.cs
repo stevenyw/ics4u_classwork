@@ -24,3 +24,4 @@ class Program
 // be(n=2) = return 2 x 1 = 2;
 // be(n=3) = return 3 x 2 = 6;
 // be (n=4) = return 4 x 6 = 24;
+// main();
