@@ -1,23 +1,33 @@
 using System;
 
-class Testing {
-    public static bool CommonEnd(int[] a, int[] b) {
-        if (a[0] == b[0] || a[(a.Length-1)] == b[(b.Length-1)]) {
-            return true;
+class Program {
+    public static int[] SearchAllIn(int[] nums, int target) {
+        int size = 0;
+        foreach (int n in nums) {
+            if (n == target) {
+                size += 1;
+            }
         }
-        else {
-            return false;
+        
+        int[] foundLocations = new int[size];
+        
+        int cursor = 0;
+        for (int i = 0; i < nums.Length; i++) {
+            if (nums[i] == target) {
+                foundLocations[cursor] = i;
+                cursor++;
+            }
+        }
+
+        return foundLocations;
+    }
+
+    public static void Main(string[] args) {
+        int[] marks = new int[] {89, 100, 89, 32, 100, 55, 100, 88};
+        int[] locationsOf100 = SearchAllIn(marks, 100);
+        
+        foreach (int i in locationsOf100) {
+            Console.WriteLine(i);
         }
     }
 }
-
-class Program
-{
-    public static void Main(string[] args)
-    {
-        int[] a = new int[] {1, 2, 3};
-        int[] b = new int[] {1, 2, 3};
-        bool apple = Testing.CommonEnd(a, b);
-        Console.WriteLine(apple);
-        }
-    }
