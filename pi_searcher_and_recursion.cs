@@ -23,3 +23,7 @@ class Program
         Console.WriteLine(piemaker);
     }
 }
+// pi(str="xpipix") = return x + ChangePi("pipix");
+// pi(str="xpipix") = return x3.14 + ChangePi("pix");
+// pi(str="xpipix") = return x3.143.14 + ChangePi("x");
+// pi(str="xpipix") = return 3.143.14x;
