@@ -8,6 +8,9 @@ class Testing {
         if (str.Length == 0) {
             return str;
         }
+        if (str.Length == 1) {
+            return str;
+        }
         return str[0] + "*" + AllStar(str.Substring(1)); // Adds the first character + star + rest, over and over
     }
 }
