@@ -19,10 +19,13 @@ class IntegerArrayList {
     }
     
     public string ToString(string str) {
-        
-        }
-    }
-    
+            string thing = "";
+            foreach(int i in this._numbers) {
+                thing += this._numbers[i];
+                thing += ",";
+            }
+            return "[" + thing + "]";
+            }
 }
 
 class Program
