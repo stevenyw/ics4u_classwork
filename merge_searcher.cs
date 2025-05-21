@@ -36,8 +36,15 @@ class Program
                 cursor += 1;
                 intright += 1;
             }
-        foreach (int t in newarray) {
-            Console.WriteLine(t);
+        // tostring
+        string thing = "[";
+        for (int i = 0; i < newarray.Length; i++) {
+            thing += newarray[i];
+            if (i < newarray.Length - 1) {
+                thing += ", ";
+            }
         }
+        thing += "]";
+        Console.WriteLine(thing);
+            }
     }
-}
