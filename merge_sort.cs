@@ -15,11 +15,6 @@ class Program
                 newarray[cursor] = right[intright];
                 cursor += 1;
                 intright += 1;
-            } 
-            if (right[intright] > left[intleft]) {
-                newarray[cursor] = left[intleft];
-                cursor += 1;
-                intleft += 1;
             } else {
                 newarray[cursor] = left[intleft];
                 cursor += 1;
