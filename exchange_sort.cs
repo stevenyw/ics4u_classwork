@@ -21,4 +21,6 @@ class Program {
         int[] sorted = Testing.ExchangeSort(array);
         foreach (int t in sorted) {
             Console.WriteLine(t);
+        }
+    }
 }
