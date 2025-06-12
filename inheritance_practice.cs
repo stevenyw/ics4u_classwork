@@ -14,110 +14,90 @@ class Container {
     }
     
     public virtual void Consume(int amount) {
-        if (this._volume <= 0) {
-            throw new ArgumentException("Container is empty");
+        if (amount > this._volume) {
+            throw new ArgumentException("You can't drink more than whats in the container");
         }
         this._volume -= amount;
     }
-    
     public virtual void Fill(int amount) {
-        if (this._volume >= this._maxVolume) {
-            throw new ArgumentException("Container is full");
+        if (amount > this._maxVolume - this._volume) {
+            throw new ArgumentException("You can't fill more than what's in the container");
         }
         this._volume += amount;
     }
-    
+}
+
 class SealableContainer : Container {
-    protected bool _isSealed = true; // Private to the client code, but not to its children (child classes)
-        
+    protected bool _isSealed = true;
+    
     public SealableContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
-        }
-        
-    public override void Consume(int amount) {
-        if (this._volume <= 0) {
-            throw new ArgumentException("Container is empty");
-            }
-        base.Consume(amount);
-        }
-        
-    public void Fill(int amount) {
-        if (this._volume >= this._maxVolume) {
-            throw new ArgumentException("Container is full"); }
-        base.Fill(amount);
-            }
-        
-    public void Open() { // W
-        if (_isSealed == false) {
-            throw new ArgumentException("It's already open");
-        }
-        _isSealed = false;
     }
     
-    public void Closed() {
-        if (_isSealed == true) {
-            throw new ArgumentException("It's already closed");
+    public override void Consume(int amount) {
+        if (this._isSealed == true) {
+            throw new ArgumentException("You can't consume from a sealed off container");
         }
-        _isSealed = true;
+        base.Consume(amount);
+    }
+    public override void Fill(int amount) {
+        if (this._isSealed == true) {
+            throw new ArgumentException("You can't consume from a sealed off container");
+        }
+        base.Fill(amount);
+    }
+    
+    public virtual void Open() {
+        this._isSealed = false;
+    }
+    public virtual void Close() {
+        this._isSealed = true;
     }
 }
 
-class LockedContainer : SealableContainer {
-    private bool _isLocked = false;
+class LockableContainer : SealableContainer {
+    protected bool _isLocked = true;
     
-    public LockedContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
+    public LockableContainer(string brand, string color, int maxVolume) : base(brand, color, maxVolume) {
     }
-    
-    // Make methods public
-    public void Consume(int amount) {
-        if (this._volume <= 0) {
-            throw new ArgumentException("Container is empty");
-            
-        }
-        if (amount > this._volume) {
-            throw new ArgumentException("You can't drink more than the remaining volume");
-            }
-        if (_isLocked == true) {
+    public override void Consume(int amount) {
+        if (this._isLocked == true) {
             throw new ArgumentException("You can't consume from a locked container");
         }
         base.Consume(amount);
     }
-        
-    public void Fill(int amount) {
-        if (this._volume >= this._maxVolume) {
-            throw new ArgumentException("Container is full");
-        }
-        if (_isLocked == true) {
-            throw new ArgumentException("You can't fill a locked container");
+    public override void Fill(int amount) {
+        if (this._isLocked == true) {
+            throw new ArgumentException("You can't consume from a locked container");
         }
         base.Fill(amount);
     }
-    
-    public void Open() {
-       base.Open();
-    }
-    
-    public void Closed() {
-        base.Closed();
-    }
-    
-    public void Lock() {
-        if (_isSealed == false) {
-            throw new ArgumentException("t");
+    public override void Open() {
+        if (this._isLocked == true) {
+            throw new ArgumentException("You can't open a locked container");
         }
-        _isLocked = true;
+        base.Open();
     }
-    
+    public override void Close() {
+        if (this._isLocked == true) {
+            throw new ArgumentException("You can't close a locked container");
+        base.Close();
+        }
+    }
+    public void Lock() {
+        this._isLocked = true;
+    }
     public void Unlock() {
-        _isLocked = false;
+        this._isLocked = false;
     }
-}
-
-class Program {
+} 
+public class HelloWorld
+{
     public static void Main(string[] args)
     {
-        LockedContainer bucket = new LockedContainer("Michelin", "Black", 5);
-        bucket.Fill(500);
-        bucket.Consume(300);
+        LockableContainer lockingdevice = new LockableContainer("Lock-O-Tron 2000", "blue", 4757575);
+        lockingdevice.Unlock();
+        lockingdevice.Open();
+        lockingdevice.Fill(444);
+        lockingdevice.Consume(420);
     }
-}
 }
